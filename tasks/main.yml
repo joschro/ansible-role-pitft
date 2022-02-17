@@ -37,6 +37,7 @@
     creates: /etc/systemd/system/fbcp.service
 
 - name: Ensure there's enough time for the HDMI output to be activated before starting framebuffer copying service
+  become: yes
   lineinfile:
     path: /etc/systemd/system/fbcp.service
     regexp: '^ExecStartPre=/bin/sleep'
