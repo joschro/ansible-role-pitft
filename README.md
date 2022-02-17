@@ -56,7 +56,7 @@ You can now run the two commands on the command line to run the installation:
 ```
 ansible-galaxy install -r requirements.yml --force
 ansible-playbook -i localhost ansible-playbook-pitft.yml
-
+```
 
 
 Role Variables
