@@ -1,7 +1,7 @@
 ansible-role-pitft
 ==================
 
-Set up PiTFT display for usage on a Raspberry Pi.
+Set up PiTFT display for usage on a Raspberry Pi, as described in https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/easy-install-2 .
 
 Requirements
 ------------
@@ -28,7 +28,7 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - hosts: localhost
       roles:
          - { role: joschro.pitft }
 

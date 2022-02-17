@@ -1,2 +1,21 @@
 ---
 # tasks file for ansible-role-pitft
+
+- name: Ensure required packages are installed
+  package:
+    name:
+      - git
+      - python3-pip
+    state: present
+
+- name: Install python packages
+  pip:
+    name:
+      - adafruit-python-shell
+      - click
+    version: 3
+
+- name: Clone repo
+  ansible.builtin.git:
+    repo: https://github.com/adafruit/Raspberry-Pi-Installer-Scripts.git
+    dest: /src/ansible/
