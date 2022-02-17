@@ -8,14 +8,40 @@
       - python3-pip
     state: present
 
-- name: Install python packages
+- name: Ensure required python packages are installed
+  become: yes
   pip:
     name:
       - adafruit-python-shell
       - click
-    version: 3
 
-- name: Clone repo
-  ansible.builtin.git:
+- name: Ensure Ansible src directory exists
+  become: yes
+  file:
+    path: /src/
+    state: directory
+    mode: '1777'
+    recurse: yes
+
+- name: Clone Adafruit repo if not yet done
+  git:
     repo: https://github.com/adafruit/Raspberry-Pi-Installer-Scripts.git
-    dest: /src/ansible/
+    dest: /src/adafruit-tools
+    force: yes
+
+- name: Change the working directory to /src/adafruit-tools/ and run the command as root if fbcp service does not yet exist
+  command: python3 adafruit-pitft.py --display=28c --rotation=90 --install-type=fbcp --reboot=no
+  become: yes
+  args:
+    chdir: /src/adafruit-tools
+    creates: /etc/systemd/system/fbcp.service
+
+- name: Ensure there's enough time for the HDMI output to be activated before starting framebuffer copying service
+  lineinfile:
+    path: /etc/systemd/system/fbcp.service
+    regexp: '^ExecStartPre=/bin/sleep'
+    line: 'ExecStartPre=/bin/sleep 30'
+
+- name: Print message
+  debug:
+    msg: "You should reboot the system now to let changes be effective."
